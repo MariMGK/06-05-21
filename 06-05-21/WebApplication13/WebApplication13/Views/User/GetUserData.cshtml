@@ -1,0 +1,23 @@
+﻿@model IEnumerable<WebApplication13.Models.User>
+@{
+    ViewBag.Title = "GetUserData";
+}
+
+<h2>GetUserData</h2>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+        </tr>
+    }
+</table>
+

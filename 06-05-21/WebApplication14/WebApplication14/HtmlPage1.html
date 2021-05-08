@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Codingvila Web API</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Content/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="Content/bootstrap.min.css" />
+</head>
+<body class="container">
+    <div>
+        <h2>All Employees</h2>
+        <ul id="Employees" />
+    </div>
+    <div>
+        <h2>Search by Employee ID</h2>
+        <input type="text" style=" width:50%" class="form-control" id="EmpId" size="5" />
+        <br />
+        <input type="button" class="btn btn-primary" value="Search" onclick="FindEmployee();" />
+        <br />
+        <br />
+        <p id="Employee" style=" width:50%" />
+    </div>
+    <script>
+        var uri = 'api/employee';
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of Employee.
+                    $.each(data, function (key, Data) {
+                        // Add a list Data for the Employee.
+                        $('<div>', { text: formatData(Data) }).appendTo($('#Employees'));
+                    });
+                });
+        });
+
+        function formatData(Data) {
+            return 'Name :-' + Data.EmployeeName + ', Designation :- ' + Data.Designation + ', Salary :- ' + Data.Salary;
+        }
+
+        function FindEmployee() {
+            var id = $('#EmpId').val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#Employee').text(formatData(data));
+                    $('#Employee').removeClass('alert alert-danger');
+                    $('#Employee').addClass('alert alert-success');
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#Employee').text('Error: ' + err);
+                    $('#Employee').addClass('alert alert-danger');
+                    $('#Employee').removeClass('alert alert-success');
+                });
+        }
+    </script>
+    </body>
+</html>
